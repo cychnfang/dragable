@@ -1,0 +1,9 @@
+{
+  "extends": ["plugin:prettier/recommended"],
+  "parser": "vue-eslint-parser",
+  "plugins": ["@typescript-eslint", "eslint-plugin-vue"],
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser"
+  },
+  "rules": {}
+}
