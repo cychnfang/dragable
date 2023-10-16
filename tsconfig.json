@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "es2016",
+    "module": "esnext",
+    "rootDir": "./src",
+    "strict": true,          
+    "skipLibCheck": true,
+    "moduleResolution": "bundler",
+    "esModuleInterop": true,
+    "allowJs": false,
+    "declaration": true,
+    // "emitDeclarationOnly": true,
+    "noEmitOnError": true
+  },
+  "include": [
+    "./src",
+  ]
+}
