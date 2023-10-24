@@ -9,7 +9,8 @@
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "allowJs": false,
-    "declaration": true,
+    "declaration": false,
+    "noImplicitThis": false,
     // "emitDeclarationOnly": true,
     "noEmitOnError": true
   },
