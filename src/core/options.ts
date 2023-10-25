@@ -1,20 +1,23 @@
-import { GridOptions } from './../grid/index';
+import { GridOptions } from './../grid/index'
 import { Component } from '../component'
-
 
 export interface DragOptions {
   _configs: {
     helper: boolean
     grid: boolean
   }
-  _container: {
+  _container: Container | null
+  _wrap: {
     $el: Element | null
-    rect: Rect 
-  } | null
+    rect: Rect
+    configs: {
+      backgroundColor: string
+    }
+  }
   _canvas: {
     $el: Element
     rect: Rect
-  } | null,
+  } | null
   _components: Map<string, Component>
   _grid: GridOptions | null
 }
@@ -34,6 +37,18 @@ export const dragOptions: DragOptions = {
       height: DEFAULT_HEIGHT,
       left: 0,
       top: 0
+    }
+  },
+  _wrap: {
+    $el: null,
+    rect: {
+      width: DEFAULT_WIDTH,
+      height: DEFAULT_HEIGHT,
+      left: 0,
+      top: 0
+    },
+    configs: {
+      backgroundColor: ''
     }
   },
   _canvas: null,

@@ -6,5 +6,5 @@ interface Rect {
 }
 interface Container {
   $el: Element | null
-  react: Rect
+  rect: Rect
 }

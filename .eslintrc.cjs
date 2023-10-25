@@ -4,7 +4,7 @@ module.exports = {
   parserOptions: {
     sourceType: 'module'
   },
-  extends: ['plugin:prettier/recommended'],
+  extends: ['plugin:prettier/recommended', 'plugin:prettier/recommended'],
   plugins: ['@typescript-eslint'],
   rules: {
     'no-debugger': 'error'

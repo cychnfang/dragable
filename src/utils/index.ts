@@ -16,6 +16,9 @@ export function isFunction(value: any): value is (...args: any[]) => any {
 
 export const isElement = (node: any): boolean => node instanceof Element
 
+export const isColorString = (str: any): boolean =>
+  /\^#[a-zA-Z0-9]{6}$/.test(str)
+
 export const isEmpty = (value: any): boolean =>
   value === null || value === '' || value === undefined
 
