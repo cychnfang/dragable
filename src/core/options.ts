@@ -2,6 +2,7 @@ import { GridOptions } from './../grid/index'
 import { Component } from '../component'
 
 export interface DragOptions {
+  isMouted: boolean
   _configs: {
     helper: boolean
     grid: boolean
@@ -26,6 +27,7 @@ const DEFAULT_WIDTH = 1080
 const DEFAULT_HEIGHT = 900
 
 export const dragOptions: DragOptions = {
+  isMouted: false,
   _configs: {
     helper: true,
     grid: true

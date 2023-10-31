@@ -4,7 +4,7 @@ import { babel } from '@rollup/plugin-babel'
 import { terser } from 'rollup-plugin-terser'
 
 export default defineConfig({
-  input: './src/index.ts',
+  input: './src/core/index.ts',
   output: {
     file: './dist/index.js',
     format: 'es'

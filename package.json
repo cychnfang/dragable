@@ -32,6 +32,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
-    "mitt": "^3.0.1"
+    "mitt": "^3.0.1",
+    "sass": "^1.69.5"
   }
 }

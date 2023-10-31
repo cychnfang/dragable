@@ -1,4 +1,4 @@
-import { initGrid } from '../grid'
+import { initGrid, renderGrid } from '../grid'
 import { isColorString, isNumber } from '../utils'
 import { DragOptions } from './options'
 
@@ -15,6 +15,7 @@ export function init(options: any, dragInstance: DragOptions) {
 function initContainer(options: any, dragInstance: DragOptions) {
   const { $el, width, height } = options
   const $container = document.querySelector($el)
+  $container.innerHTML = ''
   const { x, y, height: cH, width: cW } = $container.getBoundingClientRect()
 
   const finalWidth = isNumber(width) ? width : cW
