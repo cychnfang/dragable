@@ -1,7 +1,8 @@
 import { DragOptions } from '../core/options'
 import { isColorString, isNumber } from '../utils'
 
-const DEFAULT_COLOR = '#F2F2F2'
+const DEFAULT_LIGHT_COLOR = '#F2F2F2'
+const DEFAULT_WEIGHT_COLOR = '#E3E3E3'
 const DEFAULT_GRIDE_WIDTH = 20
 const DEFAULT_GRIDE_HEIGHT = 20
 const DEFAULT_LINE_WIDTH = 0.5
@@ -14,7 +15,8 @@ export interface GridOptions {
     gridWidth: number
     gridHeight: number
     lineWidth: number
-    lineColor: string
+    lightColor: string
+    weightColor: string
   }
 }
 
@@ -26,6 +28,8 @@ interface Loction {
 interface Line {
   start: Loction
   end: Loction
+  lineColor: string
+  lineWidth: number
 }
 
 export const initGrid = (options: any, context: DragOptions) => {
@@ -39,13 +43,19 @@ export const initGrid = (options: any, context: DragOptions) => {
   const $grid = document.createElement('canvas')
   const $cxt = $grid.getContext('2d') as CanvasRenderingContext2D
 
-  const { gridWidth, gridHeight, lineWidth, lineColor } = gridConfigs || {}
+  const { gridWidth, gridHeight, lineWidth, lightColor, weightColor } =
+    gridConfigs || {}
   const finalGridWidth = isNumber(gridWidth) ? gridWidth : DEFAULT_GRIDE_WIDTH
   const finalGridHeight = isNumber(gridHeight)
     ? gridHeight
     : DEFAULT_GRIDE_HEIGHT
   const finalLineWidth = isNumber(lineWidth) ? lineWidth : DEFAULT_LINE_WIDTH
-  const finalLineColor = isColorString(lineColor) ? lineColor : DEFAULT_COLOR
+  const finalLightColor = isColorString(lightColor)
+    ? lightColor
+    : DEFAULT_LIGHT_COLOR
+  const finalWeightColor = isColorString(weightColor)
+    ? weightColor
+    : DEFAULT_WEIGHT_COLOR
 
   const { width, height, left, top } = (context._container as Container).rect
 
@@ -62,7 +72,8 @@ export const initGrid = (options: any, context: DragOptions) => {
       gridWidth: finalGridWidth,
       gridHeight: finalGridHeight,
       lineWidth: finalLineWidth,
-      lineColor: finalLineColor
+      lightColor: finalLightColor,
+      weightColor: finalWeightColor
     }
   }
 
@@ -77,55 +88,62 @@ export const renderGrid = (grid: GridOptions) => {
 function calcLinePoint(grid: GridOptions): Line[] {
   const { $cxt, rect, configs } = grid
   const { width, height } = rect
-  const { gridWidth, gridHeight } = configs
+  const { gridWidth, gridHeight, lineWidth, lightColor, weightColor } = configs
 
-  const row = Math.floor(width / gridWidth)
-  const cell = Math.floor(height / gridHeight)
+  const cell = Math.ceil(width / gridWidth)
+  const row = Math.ceil(height / gridHeight)
 
   let restX = (width % gridWidth) / 2
   let restY = (height % gridHeight) / 2
 
   const arr: Line[] = []
   // calc row lines
-  ;[...Array(row - 1)].forEach((_, index) => {
-    const x = index * gridWidth + restX
-    const startY = index * gridHeight + restY
-    arr.push({
-      start: {
-        x: restX,
-        y: startY
-      },
-      end: {
-        x: width + restX,
-        y: startY
-      }
-    })
+  ;[...Array(row)].forEach((_, index) => {
+    const rowY = index * gridHeight + restY
+    if (index > 0 && index < row) {
+      arr.push({
+        lineColor: index % 4 === 0 ? weightColor : lightColor,
+        lineWidth,
+        start: {
+          x: restX,
+          y: rowY
+        },
+        end: {
+          x: width - restX,
+          y: rowY
+        }
+      })
+    }
   })
-  ;[...Array(cell - 1)].forEach((_, index) => {
-    const x = index * gridWidth + restX
-    const endX = index * gridWidth + restX
-    arr.push({
-      start: {
-        x: endX,
-        y: restY
-      },
-      end: {
-        x: endX,
-        y: height + restY
-      }
-    })
+  ;[...Array(cell)].forEach((_, index) => {
+    const cellX = index * gridWidth + restX
+    if (index > 0 && index < cell) {
+      arr.push({
+        lineColor: index % 4 === 0 ? weightColor : lightColor,
+        lineWidth,
+        start: {
+          x: cellX - 0.5,
+          y: restY
+        },
+        end: {
+          x: cellX - 0.5,
+          y: height - restY
+        }
+      })
+    }
   })
+  console.log(arr)
   return arr
 }
 
 function drawLine(grid: GridOptions, lines: Line[]) {
-  console.log(lines)
   const { $cxt } = grid
   lines.forEach(line => {
     $cxt.beginPath()
-    const { start, end } = line
+    const { start, end, lineColor } = line
     $cxt.moveTo(start.x - 0.5, start.y - 0.5)
     $cxt.lineTo(end.x - 0.5, end.y - 0.5)
+    $cxt.strokeStyle = lineColor
     $cxt.stroke()
     $cxt.beginPath()
   })
@@ -136,13 +154,15 @@ function drawLine(grid: GridOptions, lines: Line[]) {
 // 响应式数据去重
 
 function setCanvasStyle(grid: GridOptions) {
-  const { $el, $cxt, rect, configs } = grid
+  const { $el, rect } = grid
   const { width, height } = rect
-  console.log(width, height)
   $el.width = width
   $el.height = height
+}
 
-  const { lineColor, lineWidth } = configs
-  $cxt.fillStyle = lineColor
+function setLineStyle(grid: GridOptions, line: Line) {
+  const { $cxt } = grid
+  const { lineColor, lineWidth } = line
+  $cxt.fillStyle = 'red'
   $cxt.lineWidth = lineWidth
 }
