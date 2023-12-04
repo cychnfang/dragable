@@ -2,6 +2,7 @@ import { GridOptions, renderGrid } from '../grid'
 import { isArray, isObject, isString, warn } from '../utils'
 import { init } from './init'
 import { dragOptions, DragOptions } from './options'
+import { createComponent } from '../component'
 
 export function createDrag(options: any) {
   if (this instanceof createDrag) {
@@ -13,10 +14,29 @@ export function createDrag(options: any) {
   const dragInstance = Object.create(dragOptions)
   init(options, dragInstance)
   render(dragInstance)
+
+  // 添加
+  const add = (options: any) => {
+    const { _canvas, _components } = dragInstance
+    const component = createComponent(options)
+
+    if (!component) {
+      warn('创建失败')
+      return
+    }
+
+    _components.set(component.id, component)
+    console.log(component.render())
+    _canvas.$el.appendChild(component.$el)
+  }
+
+  return {
+    add
+  }
 }
 
 function ensureOptions(options: any): boolean {
-  if (!(isObject(options) && !isArray(options))) {
+  if (!isObject(options)) {
     warn('options is volid')
     return false
   }

@@ -5,14 +5,15 @@ import {
   isNumber,
   isObject,
   isString,
+  setStyles,
   warn
-} from './utils'
+} from '../utils'
 
 let uid = 1
 
 export interface Component {
   id: number
-  $el: Element
+  $el: HTMLDivElement
   rect: Rect
   component: {
     $el: Element | null
@@ -20,6 +21,7 @@ export interface Component {
   }
 
   update: (loc: Partial<Rect>, c: Component) => void
+  render: () => void
 }
 const DEFAUTL_WIDTH = 200
 const DEFAUTL_HEIGHT = 200
@@ -40,14 +42,21 @@ const component: Component = {
     $el: null,
     configs: null
   },
-  update: updateRect
+  update: updateRect,
+  render: () => {
+    const { $el, rect: { width, height, left, top } = {} } = component
+    setStyles($el, {
+      width: `${width}px`,
+      height: `${width}px`,
+      left: `${width}px`,
+      top: `${width}px`
+    })
+  }
 }
 
 // 1. create componet
 export function createComponent(options: any): Component | null {
-  const c = createComponentApi(options)
-  if (c) c.update = updateRect
-  return c
+  return createComponentApi(options)
 }
 
 function createComponentApi(options: any): Component | null {
@@ -92,3 +101,5 @@ function updateRect(rect: Partial<Rect>, component: Component) {
     }
   })
 }
+
+function render() {}

@@ -58,6 +58,7 @@ export const initGrid = (options: any, context: DragOptions) => {
     : DEFAULT_WEIGHT_COLOR
 
   const { width, height, left, top } = (context._container as Container).rect
+  const { width: cW } = (context._canvas as Container).rect
 
   const gridInstance = {
     $el: $grid,
@@ -65,7 +66,7 @@ export const initGrid = (options: any, context: DragOptions) => {
     rect: {
       width,
       height,
-      left,
+      left: Math.floor((cW - width) / 2),
       top
     },
     configs: {
@@ -86,7 +87,7 @@ export const renderGrid = (grid: GridOptions) => {
 }
 
 function calcLinePoint(grid: GridOptions): Line[] {
-  const { $cxt, rect, configs } = grid
+  const { rect, configs } = grid
   const { width, height } = rect
   const { gridWidth, gridHeight, lineWidth, lightColor, weightColor } = configs
 
@@ -105,11 +106,11 @@ function calcLinePoint(grid: GridOptions): Line[] {
         lineColor: index % 4 === 0 ? weightColor : lightColor,
         lineWidth,
         start: {
-          x: restX,
+          x: restX + 0.5,
           y: rowY
         },
         end: {
-          x: width - restX,
+          x: width - restX + 0.5,
           y: rowY
         }
       })
@@ -122,17 +123,16 @@ function calcLinePoint(grid: GridOptions): Line[] {
         lineColor: index % 4 === 0 ? weightColor : lightColor,
         lineWidth,
         start: {
-          x: cellX - 0.5,
+          x: cellX + 0.5,
           y: restY
         },
         end: {
-          x: cellX - 0.5,
+          x: cellX + 0.5,
           y: height - restY
         }
       })
     }
   })
-  console.log(arr)
   return arr
 }
 
@@ -141,8 +141,8 @@ function drawLine(grid: GridOptions, lines: Line[]) {
   lines.forEach(line => {
     $cxt.beginPath()
     const { start, end, lineColor } = line
-    $cxt.moveTo(start.x - 0.5, start.y - 0.5)
-    $cxt.lineTo(end.x - 0.5, end.y - 0.5)
+    $cxt.moveTo(start.x, start.y)
+    $cxt.lineTo(end.x, end.y)
     $cxt.strokeStyle = lineColor
     $cxt.stroke()
     $cxt.beginPath()

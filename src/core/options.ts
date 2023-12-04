@@ -8,13 +8,6 @@ export interface DragOptions {
     grid: boolean
   }
   _container: Container | null
-  _wrap: {
-    $el: Element | null
-    rect: Rect
-    configs: {
-      backgroundColor: string
-    }
-  }
   _canvas: {
     $el: Element
     rect: Rect
@@ -32,6 +25,7 @@ export const dragOptions: DragOptions = {
     helper: true,
     grid: true
   },
+  // 容器
   _container: {
     $el: null,
     rect: {
@@ -41,19 +35,10 @@ export const dragOptions: DragOptions = {
       top: 0
     }
   },
-  _wrap: {
-    $el: null,
-    rect: {
-      width: DEFAULT_WIDTH,
-      height: DEFAULT_HEIGHT,
-      left: 0,
-      top: 0
-    },
-    configs: {
-      backgroundColor: ''
-    }
-  },
+  // 画布
   _canvas: null,
+  // 受控组件集合
   _components: new Map(),
+  // 网格
   _grid: null
 }

@@ -5,6 +5,6 @@ interface Rect {
   top: number
 }
 interface Container {
-  $el: Element | null
+  $el: HTMLDivElement
   rect: Rect
 }

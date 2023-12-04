@@ -1,4 +1,5 @@
 {
+  "root": "../exemple",
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -18,7 +19,8 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": ["element-plus/global"]
   },
   "include": ["./src/**/*.ts", "./src/**/*.d.ts", "./src/**/*.tsx", "./src/**/*.vue", "dist/**/*.js"],
   "references": [{ "path": "./tsconfig.node.json" }]
